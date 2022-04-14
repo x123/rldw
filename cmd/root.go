@@ -25,7 +25,7 @@ import (
 )
 
 var cfgFile string
-var cfgVersion = "0.1.1"
+var cfgVersion = "0.0.0"
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -33,8 +33,10 @@ var rootCmd = &cobra.Command{
     Short: "rldw - regex long, didn't write",
     Long: `rldw - regex long, didn't write
 
-    a simple utility to strip commonly requested entity types (e.g., ipv4
-    addresses, email addresses, etc.) from text`,
+    A command-line utility used primarily to quickly strip IPv4 and IPv6
+    addresses from standard input. This is handy for rapidly pulling data out
+    of log files for further processing, without having to paste in complicated
+    regular expressions.`,
     // Uncomment the following line if your bare application
     // has an action associated with it:
     // Run: func(cmd *cobra.Command, args []string) { }
