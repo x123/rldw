@@ -19,5 +19,5 @@ package main
 import "github.com/x123/rldw/cmd"
 
 func main() {
-	cmd.Execute()
+    cmd.Execute()
 }

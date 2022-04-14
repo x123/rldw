@@ -17,17 +17,17 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
-	"fmt"
+    "fmt"
     "bufio"
     "os"
 
-	"github.com/spf13/cobra"
+    "github.com/spf13/cobra"
 )
 
 // ipv4Cmd represents the ipv4 command
 var ipv4Cmd = &cobra.Command{
-	Use:   "ipv4",
-	Short: "Strip IPv4 addesses from stdin",
+    Use:   "ipv4",
+    Short: "Strip IPv4 addesses from stdin",
     Long: `Strip IPv4 addresses from stdin, for further parsing. For example:
 
 $ echo "4.2.2.2 sometexthere 8.8.8.8" | rldw ipv4
@@ -35,7 +35,7 @@ $ echo "4.2.2.2 sometexthere 8.8.8.8" | rldw ipv4
 8.8.8.8
 
 `,
-	Run: func(cmd *cobra.Command, args []string) {
+    Run: func(cmd *cobra.Command, args []string) {
         scanner := bufio.NewScanner(os.Stdin)
         for scanner.Scan() {
             ips := regexpIPV4.FindAllString(scanner.Text(), -1)
@@ -50,15 +50,15 @@ $ echo "4.2.2.2 sometexthere 8.8.8.8" | rldw ipv4
 }
 
 func init() {
-	rootCmd.AddCommand(ipv4Cmd)
+    rootCmd.AddCommand(ipv4Cmd)
 
-	// Here you will define your flags and configuration settings.
+    // Here you will define your flags and configuration settings.
 
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// ipv4Cmd.PersistentFlags().String("foo", "", "A help for foo")
+    // Cobra supports Persistent Flags which will work for this command
+    // and all subcommands, e.g.:
+    // ipv4Cmd.PersistentFlags().String("foo", "", "A help for foo")
 
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// ipv4Cmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+    // Cobra supports local flags which will only run when this command
+    // is called directly, e.g.:
+    // ipv4Cmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
