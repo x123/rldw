@@ -23,12 +23,28 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var generateCount int
+var generateFlagCount int
+var generateToggleIPv4 bool
+var generateToggleIPv6 bool
+
+func generateIPv4(cmd *cobra.Command, args []string) {
+    for i := 0; i < generateFlagCount; i++ {
+        fmt.Println(randomip.GetPublicIPv4())
+    }
+}
 
 func generateIPv6(cmd *cobra.Command, args []string) {
-    for i := 0; i < generateCount; i++ {
+    for i := 0; i < generateFlagCount; i++ {
         fmt.Println(randomip.GetPublicIPv6())
     }
+}
+
+func generateGeneral(cmd *cobra.Command, args []string) {
+    generateToggleIPv4, _ = cmd.Flags().GetBool("ipv4")
+    generateToggleIPv6, _ = cmd.Flags().GetBool("ipv6")
+
+    if generateToggleIPv4 { generateIPv4(cmd, args) }
+    if generateToggleIPv6 { generateIPv6(cmd, args) }
 }
 
 // generateCmd represents the generate command
@@ -36,7 +52,7 @@ var generateCmd = &cobra.Command{
 	Use:   "generate",
 	Short: "generate random addresses",
 	Long: `generate random addresses for use in testing`,
-	Run: generateIPv6,
+	Run: generateGeneral,
 }
 
 func init() {
@@ -48,8 +64,11 @@ func init() {
 	// and all subcommands, e.g.:
 	// generateCmd.PersistentFlags().String("foo", "", "A help for foo")
 	generateCmd.PersistentFlags().IntVarP(
-        &generateCount, "count", "c", 1,
+        &generateFlagCount, "count", "c", 1,
         "generate count (i.e., generate count items)")
+
+    generateCmd.PersistentFlags().BoolP("ipv4", "4", true, "Generate IPv4 addresses")
+    generateCmd.PersistentFlags().BoolP("ipv6", "6", false, "Generate IPv6 addresses")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
