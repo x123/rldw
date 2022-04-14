@@ -75,12 +75,17 @@ func parseIPv6(cmd *cobra.Command, args []string) error {
 
 func parsePrintStats() error {
     if parsedLines == 0 { return errors.New("no lines could be parsed from stdin") }
-    fmt.Println("Lines parsed:", parsedLines)
+    fmt.Println("# Statistics")
+    fmt.Println("# Lines parsed:", parsedLines)
     if parseToggleIPv4 {
-        fmt.Println("IPv4 Addresses found:", foundIPv4Addresses, "/", parsedLines)
+        fmt.Printf("# IPv4 Addresses found/Lines parsed: %d/%d\n", foundIPv4Addresses, parsedLines)
+        fmt.Printf("# Percentage of lines with IPv4 addresses: %.2f%%\n", float64(foundIPv4Addresses) / float64(parsedLines) * 100.0)
+        fmt.Printf("# Average number of IPv4 addresses found/Line: %.2f\n", float64(foundIPv4Addresses) / float64(parsedLines))
     }
     if parseToggleIPv6 {
-        fmt.Println("IPv6 Addresses found:", foundIPv6Addresses, "/", parsedLines)
+        fmt.Printf("# IPv6 Addresses found/Lines parsed: %d/%d\n", foundIPv6Addresses, parsedLines)
+        fmt.Printf("# Percentage of lines with IPv6 addresses: %.2f%%\n", float64(foundIPv6Addresses) / float64(parsedLines) * 100.0)
+        fmt.Printf("# Average number of IPv6 addresses found/Line: %.2f\n", float64(foundIPv6Addresses) / float64(parsedLines))
     }
     return nil
 }
@@ -111,8 +116,7 @@ var parseCmd = &cobra.Command{
     Use:   "parse",
     Args:   func(cmd *cobra.Command, args []string) error {
         if parseToggleIPv4 && parseToggleIPv6 {
-            return nil
-            //return errors.New("only one address flag (--ipv4 or --ipv6) may be active")
+            return errors.New("only one address flag (--ipv4 or --ipv6) may be active")
         }
         return nil
     },
