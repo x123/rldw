@@ -25,7 +25,10 @@ import (
     "github.com/spf13/cobra"
 )
 
-var regexpIPV4 = regexp.MustCompile("[0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}")
+var regexpIPv4 = regexp.MustCompile(`((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])`)
+var regexpIPv6 = regexp.MustCompile(`(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|[fF][eE]80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::([fF]{4}(:0{1,4}){0,1}:){0,1}
+((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}
+(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))`)
 
 var parseToggleIPv4 bool
 var parseToggleIPv6 bool
@@ -38,7 +41,7 @@ func parseIPv4(cmd *cobra.Command, args []string) {
     scanner := bufio.NewScanner(os.Stdin)
 
     for scanner.Scan() {
-        ips := regexpIPV4.FindAllString(scanner.Text(), -1)
+        ips := regexpIPv4.FindAllString(scanner.Text(), -1)
         for _, ip := range ips {
             fmt.Println(ip)
             foundAddresses += 1
@@ -58,7 +61,20 @@ func parsePrintStats() {
 }
 
 func parseIPv6(cmd *cobra.Command, args []string) {
-    fmt.Println("IPv6 parsing not yet supported")
+    scanner := bufio.NewScanner(os.Stdin)
+
+    for scanner.Scan() {
+        ips := regexpIPv6.FindAllString(scanner.Text(), -1)
+        for _, ip := range ips {
+            fmt.Println(ip)
+            foundAddresses += 1
+        }
+        parsedLines += 1
+    }
+    if err := scanner.Err(); err != nil {
+        fmt.Println(err)
+    }
+    if parseToggleStats { parsePrintStats() }
 }
 
 func parseGeneral(cmd *cobra.Command, args []string) {
