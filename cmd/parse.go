@@ -24,6 +24,9 @@ import (
     "github.com/spf13/cobra"
 )
 
+var parseToggleIPv4 bool
+var parseToggleIPv6 bool
+
 func parseIPv4(cmd *cobra.Command, args []string) {
     scanner := bufio.NewScanner(os.Stdin)
     for scanner.Scan() {
@@ -37,6 +40,15 @@ func parseIPv4(cmd *cobra.Command, args []string) {
     }
 }
 
+func parseIPv6(cmd *cobra.Command, args []string) {
+    fmt.Println("IPv6 parsing not yet supported")
+}
+
+func parseGeneral(cmd *cobra.Command, args []string) {
+    if parseToggleIPv4 { parseIPv4(cmd, args) }
+    if parseToggleIPv6 { parseIPv6(cmd, args) }
+}
+
 // parseCmd represents the ipv4 command
 var parseCmd = &cobra.Command{
     Use:   "parse",
@@ -47,7 +59,7 @@ Example for IPv4 addressess:
 $ echo "4.2.2.2 sometexthere 8.8.8.8" | rldw parse -4
 4.2.2.2
 8.8.8.8`,
-    Run: parseIPv4,
+    Run: parseGeneral,
 }
 
 func init() {
@@ -58,8 +70,8 @@ func init() {
     // Cobra supports Persistent Flags which will work for this command
     // and all subcommands, e.g.:
     // parseCmd.PersistentFlags().String("foo", "", "A help for foo")
-    parseCmd.PersistentFlags().BoolP("ipv4", "4", true, "Parse IPv4 addresses")
-    parseCmd.PersistentFlags().BoolP("ipv6", "6", false, "Parse IPv6 addresses")
+    parseCmd.PersistentFlags().BoolVarP(&parseToggleIPv4, "ipv4", "4", true, "Parse IPv4 addresses")
+    parseCmd.PersistentFlags().BoolVarP(&parseToggleIPv6, "ipv6", "6", false, "Parse IPv6 addresses")
 
     // Cobra supports local flags which will only run when this command
     // is called directly, e.g.:

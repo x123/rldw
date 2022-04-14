@@ -40,9 +40,6 @@ func generateIPv6(cmd *cobra.Command, args []string) {
 }
 
 func generateGeneral(cmd *cobra.Command, args []string) {
-    generateToggleIPv4, _ = cmd.Flags().GetBool("ipv4")
-    generateToggleIPv6, _ = cmd.Flags().GetBool("ipv6")
-
     if generateToggleIPv4 { generateIPv4(cmd, args) }
     if generateToggleIPv6 { generateIPv6(cmd, args) }
 }
@@ -67,8 +64,8 @@ func init() {
         &generateFlagCount, "count", "c", 1,
         "generate count (i.e., generate count items)")
 
-    generateCmd.PersistentFlags().BoolP("ipv4", "4", true, "Generate IPv4 addresses")
-    generateCmd.PersistentFlags().BoolP("ipv6", "6", false, "Generate IPv6 addresses")
+    generateCmd.PersistentFlags().BoolVarP(&generateToggleIPv4, "ipv4", "4", true, "Generate IPv4 addresses")
+    generateCmd.PersistentFlags().BoolVarP(&generateToggleIPv6, "ipv6", "6", false, "Generate IPv6 addresses")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
