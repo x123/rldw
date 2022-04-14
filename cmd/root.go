@@ -17,7 +17,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
-    "bufio"
 	"fmt"
 	"os"
     "regexp"
@@ -41,20 +40,8 @@ var rootCmd = &cobra.Command{
     `,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
-	Run: func(cmd *cobra.Command, args []string) {
-        scanner := bufio.NewScanner(os.Stdin)
-        for scanner.Scan() {
-            ips := regexpIPV4.FindAllString(scanner.Text(), -1)
-            for _, ip := range ips {
-                fmt.Println(ip)
-            }
-        }
-        if err := scanner.Err(); err != nil {
-            fmt.Println(err)
-        }
-    },
+	// Run: func(cmd *cobra.Command, args []string) { }
 }
-
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
