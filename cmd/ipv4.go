@@ -24,6 +24,19 @@ import (
     "github.com/spf13/cobra"
 )
 
+func parseIPv4(cmd *cobra.Command, args []string) {
+    scanner := bufio.NewScanner(os.Stdin)
+    for scanner.Scan() {
+        ips := regexpIPV4.FindAllString(scanner.Text(), -1)
+        for _, ip := range ips {
+            fmt.Println(ip)
+        }
+    }
+    if err := scanner.Err(); err != nil {
+        fmt.Println(err)
+    }
+}
+
 // ipv4Cmd represents the ipv4 command
 var ipv4Cmd = &cobra.Command{
     Use:   "ipv4",
@@ -35,18 +48,7 @@ $ echo "4.2.2.2 sometexthere 8.8.8.8" | rldw ipv4
 8.8.8.8
 
 `,
-    Run: func(cmd *cobra.Command, args []string) {
-        scanner := bufio.NewScanner(os.Stdin)
-        for scanner.Scan() {
-            ips := regexpIPV4.FindAllString(scanner.Text(), -1)
-            for _, ip := range ips {
-                fmt.Println(ip)
-            }
-        }
-        if err := scanner.Err(); err != nil {
-            fmt.Println(err)
-        }
-    },
+    Run: parseIPv4,
 }
 
 func init() {
