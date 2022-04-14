@@ -27,6 +27,7 @@ import (
 )
 
 var cfgFile string
+var cfgVersion = "0.1.1"
 var regexpIPV4 = regexp.MustCompile("[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}")
 
 // rootCmd represents the base command when called without any subcommands
