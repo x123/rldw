@@ -37,29 +37,31 @@ func parseIPv4(cmd *cobra.Command, args []string) {
     }
 }
 
-// ipv4Cmd represents the ipv4 command
-var ipv4Cmd = &cobra.Command{
-    Use:   "ipv4",
-    Short: "Strip IPv4 addesses from stdin",
-    Long: `Strip IPv4 addresses from stdin, for further parsing.
+// parseCmd represents the ipv4 command
+var parseCmd = &cobra.Command{
+    Use:   "parse",
+    Short: "Strip IP addesses from stdin",
+    Long: `Strip IP addresses from stdin, for further parsing.
 
-Example:
-$ echo "4.2.2.2 sometexthere 8.8.8.8" | rldw ipv4
+Example for IPv4 addressess:
+$ echo "4.2.2.2 sometexthere 8.8.8.8" | rldw parse -4
 4.2.2.2
 8.8.8.8`,
     Run: parseIPv4,
 }
 
 func init() {
-    rootCmd.AddCommand(ipv4Cmd)
+    rootCmd.AddCommand(parseCmd)
 
     // Here you will define your flags and configuration settings.
 
     // Cobra supports Persistent Flags which will work for this command
     // and all subcommands, e.g.:
-    // ipv4Cmd.PersistentFlags().String("foo", "", "A help for foo")
+    // parseCmd.PersistentFlags().String("foo", "", "A help for foo")
+    parseCmd.PersistentFlags().BoolP("ipv4", "4", true, "Parse IPv4 addresses")
+    parseCmd.PersistentFlags().BoolP("ipv6", "6", false, "Parse IPv6 addresses")
 
     // Cobra supports local flags which will only run when this command
     // is called directly, e.g.:
-    // ipv4Cmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+    // parseCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
