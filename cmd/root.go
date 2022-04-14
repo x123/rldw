@@ -36,8 +36,7 @@ var rootCmd = &cobra.Command{
     Long: `rldw - regex long, didn't write
 
     a simple utility to strip commonly requested entity types (e.g., ipv4
-    addresses, email addresses, etc.) from text
-    `,
+    addresses, email addresses, etc.) from text`,
     // Uncomment the following line if your bare application
     // has an action associated with it:
     // Run: func(cmd *cobra.Command, args []string) { }
