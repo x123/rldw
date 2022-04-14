@@ -18,6 +18,7 @@ package cmd
 
 import (
     "bufio"
+    "errors"
     "fmt"
     "os"
     "regexp"
@@ -35,7 +36,8 @@ var parseToggleIPv6 bool
 var parseToggleStats bool
 
 var parsedLines = 0
-var foundAddresses = 0
+var foundIPv4Addresses = 0
+var foundIPv6Addresses = 0
 
 func parseIPv4(cmd *cobra.Command, args []string) {
     scanner := bufio.NewScanner(os.Stdin)
@@ -44,20 +46,13 @@ func parseIPv4(cmd *cobra.Command, args []string) {
         ips := regexpIPv4.FindAllString(scanner.Text(), -1)
         for _, ip := range ips {
             fmt.Println(ip)
-            foundAddresses += 1
+            foundIPv4Addresses += 1
         }
         parsedLines += 1
     }
     if err := scanner.Err(); err != nil {
         fmt.Println(err)
     }
-    if parseToggleStats { parsePrintStats() }
-}
-
-func parsePrintStats() {
-    fmt.Println("Lines parsed:", parsedLines)
-    fmt.Println("Addresses found:", foundAddresses)
-    fmt.Println(foundAddresses, "/", parsedLines)
 }
 
 func parseIPv6(cmd *cobra.Command, args []string) {
@@ -67,24 +62,43 @@ func parseIPv6(cmd *cobra.Command, args []string) {
         ips := regexpIPv6.FindAllString(scanner.Text(), -1)
         for _, ip := range ips {
             fmt.Println(ip)
-            foundAddresses += 1
+            foundIPv6Addresses += 1
         }
         parsedLines += 1
     }
     if err := scanner.Err(); err != nil {
         fmt.Println(err)
     }
-    if parseToggleStats { parsePrintStats() }
+}
+
+func parsePrintStats() error {
+    if parsedLines == 0 { return errors.New("no lines could be parsed from stdin") }
+    fmt.Println("Lines parsed:", parsedLines)
+    fmt.Println("IPv4 Addresses found:", foundIPv4Addresses, "/", parsedLines)
+    fmt.Println("IPv6 Addresses found:", foundIPv6Addresses, "/", parsedLines)
+    return nil
 }
 
 func parseGeneral(cmd *cobra.Command, args []string) {
     if parseToggleIPv4 { parseIPv4(cmd, args) }
     if parseToggleIPv6 { parseIPv6(cmd, args) }
+    if parseToggleStats {
+        if err := parsePrintStats(); err != nil {
+            fmt.Println(err)
+        }
+    }
 }
 
 // parseCmd represents the ipv4 command
 var parseCmd = &cobra.Command{
     Use:   "parse",
+    Args:   func(cmd *cobra.Command, args []string) error {
+        if parseToggleIPv4 && parseToggleIPv6 {
+            return nil
+            //return errors.New("only one address flag (--ipv4 or --ipv6) may be active")
+        }
+        return nil
+    },
     Short: "Strip IP addesses from stdin",
     Long: `Strip IP addresses from stdin, for further parsing.
 
