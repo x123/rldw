@@ -39,7 +39,7 @@ var parsedLines = 0
 var foundIPv4Addresses = 0
 var foundIPv6Addresses = 0
 
-func parseIPv4(cmd *cobra.Command, args []string) {
+func parseIPv4(cmd *cobra.Command, args []string) error {
     scanner := bufio.NewScanner(os.Stdin)
 
     for scanner.Scan() {
@@ -51,11 +51,12 @@ func parseIPv4(cmd *cobra.Command, args []string) {
         parsedLines += 1
     }
     if err := scanner.Err(); err != nil {
-        fmt.Println(err)
+        return err
     }
+    return nil
 }
 
-func parseIPv6(cmd *cobra.Command, args []string) {
+func parseIPv6(cmd *cobra.Command, args []string) error {
     scanner := bufio.NewScanner(os.Stdin)
 
     for scanner.Scan() {
@@ -67,24 +68,40 @@ func parseIPv6(cmd *cobra.Command, args []string) {
         parsedLines += 1
     }
     if err := scanner.Err(); err != nil {
-        fmt.Println(err)
+        return err
     }
+    return nil
 }
 
 func parsePrintStats() error {
     if parsedLines == 0 { return errors.New("no lines could be parsed from stdin") }
     fmt.Println("Lines parsed:", parsedLines)
-    fmt.Println("IPv4 Addresses found:", foundIPv4Addresses, "/", parsedLines)
-    fmt.Println("IPv6 Addresses found:", foundIPv6Addresses, "/", parsedLines)
+    if parseToggleIPv4 {
+        fmt.Println("IPv4 Addresses found:", foundIPv4Addresses, "/", parsedLines)
+    }
+    if parseToggleIPv6 {
+        fmt.Println("IPv6 Addresses found:", foundIPv6Addresses, "/", parsedLines)
+    }
     return nil
 }
 
 func parseGeneral(cmd *cobra.Command, args []string) {
-    if parseToggleIPv4 { parseIPv4(cmd, args) }
-    if parseToggleIPv6 { parseIPv6(cmd, args) }
+    if parseToggleIPv4 {
+        if err := parseIPv4(cmd, args); err != nil {
+            fmt.Println(err)
+            return
+        }
+    }
+    if parseToggleIPv6 {
+        if err := parseIPv6(cmd, args); err != nil {
+            fmt.Println(err)
+            return
+        }
+    }
     if parseToggleStats {
         if err := parsePrintStats(); err != nil {
             fmt.Println(err)
+            return
         }
     }
 }
