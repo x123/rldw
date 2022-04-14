@@ -58,9 +58,9 @@ $ journalctl -n 5 --no-pager | rldw parse -4 -s
 | :zap: IPv6 address support is not perfect, use at your own risk |
 |-----------------------------------------------------------------|
 ```
-$ ip addr | ./rldw parse -4=false -6
-::1
-fe80::
+ip addr | rldw parse -6 -4=false
+::1/128
+fe80::215:5dff:fe8c:a18e/64
 ```
 
 ### Parse logs for IPv6 addresses
