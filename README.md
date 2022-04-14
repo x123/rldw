@@ -1,24 +1,29 @@
 rldw
 ============================
-regex long, didn't write
+## regex long, didn't write
 
-rldw commands:
-- `parse` - parse IPv4 and IPv6 addresses from stdin
-- `generate` - generate random publicly routeable IPv4 and IPv6
-  addresses
+A command-line utility used primarily to quickly strip IPv4 and IPv6 addresses
+from standard input. This is handy for rapidly pulling data out of log files
+for further processing, without having to paste in complicated regular
+expressions.
 
-## Parse IPv4 and IPv6 addresses from stdin
-`rldw parse` is used to quickly strip IPv4 and IPv6 addresses from stdin. This
-is handy for rapidly pulling data out of log files for further processing,
-without having to paste in complicated regular expressions.
+### Commands
+- parse IPv4 and IPv6 addresses from stdin (`rldw parse`)
+- generate random publicly routeable IPv4 and IPv6 addresses (`rldw generate`)
 
+Written in [Go](https://go.dev/) utilizing:
+- [spf13/cobra](https://github.com/spf13/cobra)
+- [spf13/viper](http://github.com/spf13/viper)
+- [elmasy-com/randomip](https://github.com/elmasy-com/randomip)
+
+## `rldw parse` examples
 :exclamation: `rldw parse` defaults with `--ipv4` to `true`, in order to parse
 for ipv6 addresses you must use either `rldw parse -4=false -6` or `rldw
 parse--ipv4=false --ipv6`
 
-### Parse nft sets for IPv4 addresses and print stats
-```shell
-$ nft list set inet filter scanners | rldw parse -4 -s
+### Parse nft sets for IPv4 addresses
+```
+$ nft list set inet filter scanners | rldw parse -4
 45.33.80.242
 45.76.146.20
 45.148.10.81
@@ -29,15 +34,10 @@ $ nft list set inet filter scanners | rldw parse -4 -s
 62.210.13.20
 66.228.33.237
 71.6.232.8
-# Statistics
-# Lines parsed: 5
-# IPv4 Addresses found/Lines parsed: 10/5
-# Percentage of lines with IPv4 addresses: 200.00%
-# Average number of IPv4 addresses found/Line: 2.00
 ```
 
 ### Parse journalctl logs for IPv4 addresses and print stats 
-```shell
+```
 $ journalctl -n 5 --no-pager | rldw parse -4 -s
 54.197.46.151
 116.112.99.254
@@ -57,7 +57,7 @@ $ journalctl -n 5 --no-pager | rldw parse -4 -s
 ### Parse ip addr output for IPv6 addresses
 | :zap: IPv6 address support is not perfect, use at your own risk |
 |-----------------------------------------------------------------|
-```shell
+```
 $ ip addr | ./rldw parse -4=false -6
 ::1
 fe80::
@@ -66,7 +66,7 @@ fe80::
 ### Parse logs for IPv6 addresses
 | :zap: IPv6 address support is not perfect, use at your own risk |
 |-----------------------------------------------------------------|
-```shell
+```
 $ journalctl -n 100 --no-pager | rldw parse -6 -4=false
 ::
 ::1
@@ -85,7 +85,7 @@ afa7:d32d:4a45:4017:67ff:8881:4041:94c1
 addresses. This can be handy for generating unit test datasets.
 
 ### IPv4: Generate 5 random IPv4 addresses
-```shell
+```
 $ rldw generate -4 -c 5
 62.150.113.112
 176.59.94.136
@@ -95,7 +95,7 @@ $ rldw generate -4 -c 5
 ```
 
 ### IPv6: Generate 5 random IPv6 addresses
-```shell
+```
 $ rldw generate -4=false -6 -c 5
 8b09:b7be:ec78:2195:6912:59a3:4eea:35a8
 a344:670:7ecc:e744:c315:c83e:9b32:f73b
