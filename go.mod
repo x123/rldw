@@ -3,6 +3,7 @@ module github.com/x123/rldw
 go 1.18
 
 require (
+	github.com/elmasy-com/randomip v1.0.2 // indirect
 	github.com/fsnotify/fsnotify v1.5.1 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
