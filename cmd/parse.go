@@ -17,12 +17,15 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
-    "fmt"
     "bufio"
+    "fmt"
     "os"
+    "regexp"
 
     "github.com/spf13/cobra"
 )
+
+var regexpIPV4 = regexp.MustCompile("[0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}")
 
 var parseToggleIPv4 bool
 var parseToggleIPv6 bool
