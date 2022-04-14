@@ -22,13 +22,15 @@ import (
     "github.com/spf13/cobra"
 )
 
+func printVersion(cmd *cobra.Command, args []string) {
+    fmt.Println("version:", cfgVersion )
+}
+
 // versionCmd represents the version command
 var versionCmd = &cobra.Command{
     Use:   "version",
     Short: "returns the version of rldw",
-    Run: func(cmd *cobra.Command, args []string) {
-        fmt.Println("version:", cfgVersion )
-    },
+    Run: printVersion,
 }
 
 func init() {
