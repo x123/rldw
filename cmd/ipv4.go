@@ -41,13 +41,12 @@ func parseIPv4(cmd *cobra.Command, args []string) {
 var ipv4Cmd = &cobra.Command{
     Use:   "ipv4",
     Short: "Strip IPv4 addesses from stdin",
-    Long: `Strip IPv4 addresses from stdin, for further parsing. For example:
+    Long: `Strip IPv4 addresses from stdin, for further parsing.
 
+Example:
 $ echo "4.2.2.2 sometexthere 8.8.8.8" | rldw ipv4
 4.2.2.2
-8.8.8.8
-
-`,
+8.8.8.8`,
     Run: parseIPv4,
 }
 
