@@ -48,7 +48,24 @@ func generateGeneral(cmd *cobra.Command, args []string) {
 var generateCmd = &cobra.Command{
 	Use:   "generate",
 	Short: "generate random addresses",
-	Long: `generate random addresses for use in testing`,
+	Long: `generate random addresses for use in testing
+
+Generate 2 random IPv4 addresses:
+    $ rldw generate -4 -c 2
+    7.26.13.106
+    212.212.148.53
+
+Generate 3 random IPv6 addresses:
+    $ rldw generate -4=false -6 -c 3
+    5dae:937a:4b94:8253:ef36:bdb6:4752:68df
+    e92c:ad08:e2a2:6096:77e9:befe:1a02:ee5e
+    ec96:140:ff0e:7ba7:6537:5af2:7801:155
+
+Generate 1 IPv4 address *and* one IPv6 address:
+    rldw generate -4 -6 -c1
+    98.234.210.100
+    5c47:f78c:59a4:fe43:dcc0:3085:1e1b:dadd
+`,
 	Run: generateGeneral,
 }
 
