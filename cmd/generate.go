@@ -25,16 +25,18 @@ import (
 
 var generateCount int
 
+func generateIPv6(cmd *cobra.Command, args []string) {
+    for i := 0; i < generateCount; i++ {
+        fmt.Println(randomip.GetPublicIPv6())
+    }
+}
+
 // generateCmd represents the generate command
 var generateCmd = &cobra.Command{
 	Use:   "generate",
 	Short: "generate random addresses",
 	Long: `generate random addresses for use in testing`,
-	Run: func(cmd *cobra.Command, args []string) {
-        for i := 0; i < generateCount; i++ {
-            fmt.Println(randomip.GetPublicIPv6())
-        }
-	},
+	Run: generateIPv6,
 }
 
 func init() {
