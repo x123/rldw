@@ -17,28 +17,41 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
+    "bufio"
 	"fmt"
 	"os"
+    "regexp"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
 var cfgFile string
+var regexpIPV4 = regexp.MustCompile("[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}")
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "rldw",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
+	Short: "rldw - regex long, didn't write",
+	Long: `rldw - regex long, didn't write
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+    a simple utility to strip commonly requested entity types (e.g., ipv4
+    addresses, email addresses, etc.) from text
+    `,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
-	// Run: func(cmd *cobra.Command, args []string) { },
+	Run: func(cmd *cobra.Command, args []string) {
+        scanner := bufio.NewScanner(os.Stdin)
+        for scanner.Scan() {
+            ips := regexpIPV4.FindAllString(scanner.Text(), -1)
+            for _, ip := range ips {
+                fmt.Println(ip)
+            }
+        }
+        if err := scanner.Err(); err != nil {
+            fmt.Println(err)
+        }
+    },
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
