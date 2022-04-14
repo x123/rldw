@@ -29,18 +29,32 @@ var regexpIPV4 = regexp.MustCompile("[0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}[.][0-9
 
 var parseToggleIPv4 bool
 var parseToggleIPv6 bool
+var parseToggleStats bool
+
+var parsedLines = 0
+var foundAddresses = 0
 
 func parseIPv4(cmd *cobra.Command, args []string) {
     scanner := bufio.NewScanner(os.Stdin)
+
     for scanner.Scan() {
         ips := regexpIPV4.FindAllString(scanner.Text(), -1)
         for _, ip := range ips {
             fmt.Println(ip)
+            foundAddresses += 1
         }
+        parsedLines += 1
     }
     if err := scanner.Err(); err != nil {
         fmt.Println(err)
     }
+    if parseToggleStats { parsePrintStats() }
+}
+
+func parsePrintStats() {
+    fmt.Println("Lines parsed:", parsedLines)
+    fmt.Println("Addresses found:", foundAddresses)
+    fmt.Println(foundAddresses, "/", parsedLines)
 }
 
 func parseIPv6(cmd *cobra.Command, args []string) {
@@ -73,8 +87,15 @@ func init() {
     // Cobra supports Persistent Flags which will work for this command
     // and all subcommands, e.g.:
     // parseCmd.PersistentFlags().String("foo", "", "A help for foo")
-    parseCmd.PersistentFlags().BoolVarP(&parseToggleIPv4, "ipv4", "4", true, "Parse IPv4 addresses")
-    parseCmd.PersistentFlags().BoolVarP(&parseToggleIPv6, "ipv6", "6", false, "Parse IPv6 addresses")
+    parseCmd.PersistentFlags().BoolVarP(
+        &parseToggleIPv4, "ipv4", "4", true, "Parse IPv4 addresses",
+    )
+    parseCmd.PersistentFlags().BoolVarP(
+        &parseToggleIPv6, "ipv6", "6", false, "Parse IPv6 addresses",
+    )
+    parseCmd.PersistentFlags().BoolVarP(
+        &parseToggleStats, "stats", "s", false, "Provide parsed input stats.",
+    )
 
     // Cobra supports local flags which will only run when this command
     // is called directly, e.g.:
