@@ -1,3 +1,4 @@
+//Package cmd generate
 /*
 Copyright © 2022 x123 x123@users.noreply.github.com
 

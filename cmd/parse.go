@@ -1,3 +1,4 @@
+//Package cmd parse
 /*
 Copyright © 2022 x123 x123@users.noreply.github.com
 
@@ -44,9 +45,9 @@ func parseIPv4(cmd *cobra.Command, args []string) error {
 		ips := regexpIPv4.FindAllString(scanner.Text(), -1)
 		for _, ip := range ips {
 			fmt.Println(ip)
-			foundIPv4Addresses += 1
+			foundIPv4Addresses++
 		}
-		parsedLines += 1
+		parsedLines++
 	}
 	if err := scanner.Err(); err != nil {
 		return err
@@ -61,9 +62,9 @@ func parseIPv6(cmd *cobra.Command, args []string) error {
 		ips := regexpIPv6.FindAllString(scanner.Text(), -1)
 		for _, ip := range ips {
 			fmt.Println(ip)
-			foundIPv6Addresses += 1
+			foundIPv6Addresses++
 		}
-		parsedLines += 1
+		parsedLines++
 	}
 	if err := scanner.Err(); err != nil {
 		return err
