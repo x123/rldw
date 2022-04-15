@@ -17,10 +17,10 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
-	"fmt"
+    "fmt"
 
     "github.com/elmasy-com/randomip"
-	"github.com/spf13/cobra"
+    "github.com/spf13/cobra"
 )
 
 var generateFlagCount int
@@ -46,9 +46,9 @@ func generateGeneral(cmd *cobra.Command, args []string) {
 
 // generateCmd represents the generate command
 var generateCmd = &cobra.Command{
-	Use:   "generate",
-	Short: "generate random addresses",
-	Long: `generate random addresses for use in testing
+    Use:   "generate",
+    Short: "generate random addresses",
+    Long: `generate random addresses for use in testing
 
 Generate 2 random IPv4 addresses:
     $ rldw generate -4 -c 2
@@ -66,25 +66,25 @@ Generate 1 IPv4 address *and* one IPv6 address:
     98.234.210.100
     5c47:f78c:59a4:fe43:dcc0:3085:1e1b:dadd
 `,
-	Run: generateGeneral,
+    Run: generateGeneral,
 }
 
 func init() {
-	rootCmd.AddCommand(generateCmd)
+    rootCmd.AddCommand(generateCmd)
 
-	// Here you will define your flags and configuration settings.
+    // Here you will define your flags and configuration settings.
 
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// generateCmd.PersistentFlags().String("foo", "", "A help for foo")
-	generateCmd.PersistentFlags().IntVarP(
+    // Cobra supports Persistent Flags which will work for this command
+    // and all subcommands, e.g.:
+    // generateCmd.PersistentFlags().String("foo", "", "A help for foo")
+    generateCmd.PersistentFlags().IntVarP(
         &generateFlagCount, "count", "c", 1,
         "generate count (i.e., generate count items)")
 
     generateCmd.PersistentFlags().BoolVarP(&generateToggleIPv4, "ipv4", "4", true, "Generate IPv4 addresses")
     generateCmd.PersistentFlags().BoolVarP(&generateToggleIPv6, "ipv6", "6", false, "Generate IPv6 addresses")
 
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// generateCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+    // Cobra supports local flags which will only run when this command
+    // is called directly, e.g.:
+    // generateCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
