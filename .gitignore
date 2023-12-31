@@ -1,3 +1,4 @@
 rldw
 test*.txt
 *.swp
+.direnv
